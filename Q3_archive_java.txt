@@ -1,4 +1,4 @@
-Nom et prénom: Votre Nom et Prénom
+Capucine
 
 Contenu de Q3.java:
 -------------------
