@@ -10,10 +10,10 @@ public class Q5 {
                     System.out.println();
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Please provide a valid number as parameter.");
+                System.out.println("erreur");
             }
         } else {
-            System.out.println("Please provide the number of rows as a parameter.");
+            System.out.println("erreur");
         }
     }
 }
