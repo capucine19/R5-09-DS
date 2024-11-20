@@ -1,0 +1,62 @@
+name: Create Q6 Archive with Date and Compare Changes
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write 
+
+jobs:
+  create-q6-archive:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Create Q6 archive with file details
+      run: |
+        DATE=$(date '+%d-%m-%Y-%H%M%S')
+        ARCHIVE_FILE="Q6_archive_${DATE}.txt"
+        echo "Nom et prénom: Capucine" > $ARCHIVE_FILE
+        echo "" >> $ARCHIVE_FILE
+        echo "Contenu de Q6.java:" >> $ARCHIVE_FILE
+        echo "-------------------" >> $ARCHIVE_FILE
+        if [ -f "Q6.java" ]; then
+          cat Q6.java >> $ARCHIVE_FILE
+          echo "" >> $ARCHIVE_FILE
+          echo "Taille du fichier Q6.java:" >> $ARCHIVE_FILE
+          wc Q6.java >> $ARCHIVE_FILE
+        else
+          echo "Q6.java not found." >> $ARCHIVE_FILE
+          exit 1
+        fi
+
+    - name: Compare with previous archive
+      run: |
+        LAST_FILE=$(ls -t Q6_archive_*.txt | head -n 2 | tail -n 1 || echo "")
+        if [ -n "$LAST_FILE" ]; then
+          diff $LAST_FILE $ARCHIVE_FILE > Q6_différences.txt || true
+        else
+          echo "Pas de fichier précédent trouvé pour comparaison." > Q6_différences.txt
+        fi
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Pull remote changes
+      run: |
+        git pull origin main --rebase || git reset --hard origin/main
+
+    - name: Commit changes
+      run: |
+        git add Q6_archive_*.txt Q6_différences.txt
+        git commit -m "Create Q6_archive_<date>.txt and Q6_différences.txt" || echo "No changes to commit"
+
+    - name: Push changes
+      run: |
+        git push origin main
