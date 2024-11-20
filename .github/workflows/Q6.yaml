@@ -48,7 +48,7 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Pull remote changes
+    - name: Fetch and reset remote changes
       run: |
         git fetch origin
         git reset --hard origin/main
@@ -58,6 +58,6 @@ jobs:
         git add Q6_archive_*.txt Q6_différences.txt
         git commit -m "Create Q6_archive_<date>.txt and Q6_différences.txt" || echo "No changes to commit"
 
-    - name: Push changes
+    - name: Force push changes
       run: |
-        git push origin main
+        git push origin main --force
