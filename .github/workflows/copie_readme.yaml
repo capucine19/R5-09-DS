@@ -1,0 +1,42 @@
+name: Copy and Push README
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  copy-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Vérifie le code
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Copie le contenu de README.md dans Q1_archive_README.md
+    - name: Create Q1_archive_README.md
+      run: |
+        if [ -f "README.md" ]; then
+          cp README.md Q1_archive_README.md
+        else
+          echo "README.md not found, skipping..."
+          exit 1
+        fi
+
+    # Configure Git
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    # Ajoute et commite les modifications
+    - name: Commit changes
+      run: |
+        git add Q1_archive_README.md
+        git commit -m "Create Q1_archive_README.md from README.md" || echo "No changes to commit"
+
+    # Pousse les modifications vers le dépôt
+    - name: Push changes
+      run: |
+        git push origin main
