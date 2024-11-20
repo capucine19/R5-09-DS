@@ -1,9 +1,0 @@
-Nom et prénom: Capucine
-
-Résultat de l'exécution de Q4.java:
------------------------------------
-*
-**
-***
-****
-*****
