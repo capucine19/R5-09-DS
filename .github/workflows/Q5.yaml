@@ -1,0 +1,65 @@
+name: Create Q5 Archive with Date
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write 
+
+jobs:
+  create-q5-archive:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Installe Java
+    - name: Install Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Compile Q5.java
+      run: |
+        if [ -f "Q5.java" ]; then
+          javac Q5.java
+        else
+          echo "Q5.java not found. Cannot compile."
+          exit 1
+        fi
+
+    - name: Execute Q5.java and create archive
+      run: |
+        DATE=$(date '+%d-%m-%Y')
+        ARCHIVE_FILE="Q5_archive_${DATE}.txt"
+        echo "Nom et prénom: Capucine" > $ARCHIVE_FILE
+        echo "" >> $ARCHIVE_FILE
+        echo "Contenu de Q5.java:" >> $ARCHIVE_FILE
+        echo "------------------" >> $ARCHIVE_FILE
+        cat Q5.java >> $ARCHIVE_FILE
+        echo "" >> $ARCHIVE_FILE
+        echo "Résultat de l'exécution de Q5.java:" >> $ARCHIVE_FILE
+        echo "-----------------------------------" >> $ARCHIVE_FILE
+        java Q5 5 >> $ARCHIVE_FILE # Remplacez "5" par un autre paramètre si nécessaire.
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Pull remote changes
+      run: |
+        git pull origin main --rebase
+
+    - name: Commit changes
+      run: |
+        git add Q5_archive_*.txt
+        git commit -m "Create Q5_archive_<date>.txt with Q5.java execution result" || echo "No changes to commit"
+
+    - name: Push changes
+      run: |
+        git push origin main
