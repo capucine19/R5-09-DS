@@ -6,23 +6,21 @@ on:
       - main
 
 permissions:
-  contents: write # Nécessaire pour pousser les modifications au dépôt
+  contents: write 
 
 jobs:
   create-q4-archive:
     runs-on: ubuntu-latest
 
     steps:
-    # Vérifie le code
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Installe Java
     - name: Install Java
       uses: actions/setup-java@v3
       with:
-        java-version: '11' # Ou une autre version compatible avec votre fichier Q4.java
-        distribution: 'temurin' # Distribution Java
+        java-version: '11' 
+        distribution: 'temurin' 
 
     # Compile Q4.java
     - name: Compile Q4.java
@@ -33,31 +31,26 @@ jobs:
           echo "Q4.java not found. Cannot compile."
           exit 1
         fi
-
-    # Exécute Q4.java et génère le fichier d'archive
     - name: Execute Q4.java and create archive
       run: |
         DATE=$(date '+%d-%m-%Y')
         ARCHIVE_FILE="Q4_archive_${DATE}.txt"
-        echo "Nom et prénom: Votre Nom et Prénom" > $ARCHIVE_FILE
+        echo "Capucine" > $ARCHIVE_FILE
         echo "" >> $ARCHIVE_FILE
         echo "Résultat de l'exécution de Q4.java:" >> $ARCHIVE_FILE
         echo "-----------------------------------" >> $ARCHIVE_FILE
         java Q4 5 >> $ARCHIVE_FILE # Remplacez "5" par un autre paramètre si nécessaire.
 
-    # Configure Git
     - name: Configure Git
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
 
-    # Ajoute et commite les modifications
     - name: Commit changes
       run: |
         git add Q4_archive_*.txt
         git commit -m "Create Q4_archive_<date>.txt with Q4.java execution result" || echo "No changes to commit"
 
-    # Pousse les modifications vers le dépôt
     - name: Push changes
       run: |
         git push origin main
