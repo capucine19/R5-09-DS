@@ -38,7 +38,7 @@ jobs:
 
     - name: Pull remote changes
       run: |
-        git pull origin main --rebase
+        git pull origin main --rebase || git reset --hard origin/main
 
     - name: Commit changes
       run: |
