@@ -1,0 +1,46 @@
+name: Create Q2_archive_README.md
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write # Nécessaire pour pousser des modifications au dépôt
+
+jobs:
+  create-q2-archive:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Vérifie le code
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Crée Q2_archive_README.md avec les informations demandées
+    - name: Create Q2_archive_README.md
+      run: |
+        if [ -f "README.md" ]; then
+          echo "Capucine" > Q2_archive_README.md
+          echo "Date et heure d'exécution: $(date '+%Y-%m-%d %H:%M:%S')" >> Q2_archive_README.md
+          echo "" >> Q2_archive_README.md
+          echo "Contenu de README.md:" >> Q2_archive_README.md
+          echo "---------------------" >> Q2_archive_README.md
+          cat README.md >> Q2_archive_README.md
+        else
+          echo "README.md not found. Cannot create Q2_archive_README.md."
+          exit 1
+        fi
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Commit changes
+      run: |
+        git add Q2_archive_README.md
+        git commit -m "Create Q2_archive_README.md with name, date, and README.md content" || echo "No changes to commit"
+
+    - name: Push changes
+      run: |
+        git push origin main
