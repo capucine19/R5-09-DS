@@ -13,7 +13,8 @@ public class Q6 {
                 System.out.println("erreur");
             }
         } else {
-            System.out.println("erreur");
+            System.out.println("erreur changement");
+            
         }
     }
 }
