@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: write # Nécessaire pour pousser les modifications au dépôt
+  contents: write 
 
 jobs:
   create-q3-archive:
@@ -20,7 +20,7 @@ jobs:
     - name: Create Q3_archive_java.txt
       run: |
         if [ -f "Q3.java" ]; then
-          echo "Nom et prénom: Votre Nom et Prénom" > Q3_archive_java.txt
+          echo "Capucine" > Q3_archive_java.txt
           echo "" >> Q3_archive_java.txt
           echo "Contenu de Q3.java:" >> Q3_archive_java.txt
           echo "-------------------" >> Q3_archive_java.txt
