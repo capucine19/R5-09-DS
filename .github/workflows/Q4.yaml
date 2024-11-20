@@ -1,4 +1,4 @@
-name: Create Q4 Archive with Execution Result
+name: Create Q4 Archive with Date
 
 on:
   push:
@@ -13,16 +13,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Vérifie le code
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    # Installe Java
     - name: Install Java
       uses: actions/setup-java@v3
       with:
-        java-version: '11' 
-        distribution: 'temurin' 
+        java-version: '11'
+        distribution: 'temurin'
 
-    # Compile Q4.java
     - name: Compile Q4.java
       run: |
         if [ -f "Q4.java" ]; then
@@ -31,11 +32,12 @@ jobs:
           echo "Q4.java not found. Cannot compile."
           exit 1
         fi
+
     - name: Execute Q4.java and create archive
       run: |
         DATE=$(date '+%d-%m-%Y')
         ARCHIVE_FILE="Q4_archive_${DATE}.txt"
-        echo "Capucine" > $ARCHIVE_FILE
+        echo "Nom et prénom: Capucine" > $ARCHIVE_FILE
         echo "" >> $ARCHIVE_FILE
         echo "Résultat de l'exécution de Q4.java:" >> $ARCHIVE_FILE
         echo "-----------------------------------" >> $ARCHIVE_FILE
@@ -45,6 +47,10 @@ jobs:
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Pull remote changes
+      run: |
+        git pull origin main --rebase
 
     - name: Commit changes
       run: |
