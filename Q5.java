@@ -3,17 +3,17 @@ public class Q5 {
         if (args.length > 0) {
             try {
                 int n = Integer.parseInt(args[0]);
-                for (int i = n; i >= 1; i--) { // Boucle inversée
+                for (int i = n; i >= 1; i--) {
                     for (int j = 0; j < i; j++) {
-                        System.out.print("*");
+                        System.out.print("x"); // Remplace * par x
                     }
                     System.out.println();
                 }
             } catch (NumberFormatException e) {
-                System.out.println("erreur");
+                System.out.println("Please provide a valid number as parameter.");
             }
         } else {
-            System.out.println("erreur");
+            System.out.println("Please provide the number of rows as a parameter.");
         }
     }
 }
