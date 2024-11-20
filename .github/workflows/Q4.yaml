@@ -22,6 +22,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '11' # Ou une autre version compatible avec votre fichier Q4.java
+        distribution: 'temurin' # Distribution Java
 
     # Compile Q4.java
     - name: Compile Q4.java
@@ -38,11 +39,11 @@ jobs:
       run: |
         DATE=$(date '+%d-%m-%Y')
         ARCHIVE_FILE="Q4_archive_${DATE}.txt"
-        echo "Capucine" > $ARCHIVE_FILE
+        echo "Nom et prénom: Votre Nom et Prénom" > $ARCHIVE_FILE
         echo "" >> $ARCHIVE_FILE
         echo "Résultat de l'exécution de Q4.java:" >> $ARCHIVE_FILE
         echo "-----------------------------------" >> $ARCHIVE_FILE
-        java Q4 5 >> $ARCHIVE_FILE # Vous pouvez remplacer "5" par un autre nombre d'étoiles.
+        java Q4 5 >> $ARCHIVE_FILE # Remplacez "5" par un autre paramètre si nécessaire.
 
     # Configure Git
     - name: Configure Git
