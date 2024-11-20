@@ -1,0 +1,46 @@
+name: Create Q3 Archive
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write # Nécessaire pour pousser les modifications au dépôt
+
+jobs:
+  create-q3-archive:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Vérifie le code
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Create Q3_archive_java.txt
+      run: |
+        if [ -f "Q3.java" ]; then
+          echo "Nom et prénom: Votre Nom et Prénom" > Q3_archive_java.txt
+          echo "" >> Q3_archive_java.txt
+          echo "Contenu de Q3.java:" >> Q3_archive_java.txt
+          echo "-------------------" >> Q3_archive_java.txt
+          cat Q3.java >> Q3_archive_java.txt
+        else
+          echo "Q3.java not found. Cannot create Q3_archive_java.txt."
+          exit 1
+        fi
+
+    # Configure Git
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Commit changes
+      run: |
+        git add Q3_archive_java.txt
+        git commit -m "Create Q3_archive_java.txt" || echo "No changes to commit"
+
+    - name: Push changes
+      run: |
+        git push origin main
